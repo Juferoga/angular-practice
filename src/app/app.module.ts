@@ -8,7 +8,10 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS} from '@angular/common/http';
 
+import { SpinnerModule } from '@shared/components/spinner/spinner.module';
+import { SpinnerInterceptor } from '@shared/interceptors/spinner.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HeaderModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
+    SpinnerModule,
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -11,7 +11,7 @@
 
 html {
   font-family: 'RocknRoll One', sans-serif;
-  background-color: #160825;
+  background-color: #333;
   scroll-behavior: smooth;
 }
 
@@ -312,7 +312,7 @@ nav {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(74, 74, 74, .8);
+  background-color: rgba(46, 37, 66, 0.8);
   z-index: 10;
   display: flex;
   align-items: center;
