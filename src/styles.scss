@@ -3,6 +3,7 @@
 *,
 *:before,
 *:after {
+  color: #FFF;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -295,6 +296,10 @@ nav {
   color: #fff;
 }
 
+.text-orange {
+  color: orangered;
+}
+
 .truncate-string {
   width: 220px;
   white-space: nowrap;
@@ -469,4 +474,8 @@ ul.episodes__list {
       opacity: 1;
     }
   }
+}
+
+a{
+  color: orangered;
 }
