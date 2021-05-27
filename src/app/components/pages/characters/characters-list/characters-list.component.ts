@@ -7,11 +7,11 @@ import { DataService } from '@app/shared/service/data.service';
   styleUrls: ['./characters-list.component.scss']
 })
 export class CharactersListComponent implements OnInit {
-
+  // Definición del observable, a partir del servicio creado
+  characters$ = this.dataSvc.characters$;
   constructor(private dataSvc: DataService) { }
 
   ngOnInit(): void {
-    this.dataSvc.getDataApi();
   }
 
 }
