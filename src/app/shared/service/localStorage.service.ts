@@ -2,6 +2,7 @@ import { NotFoundRoutingModule } from './../../components/pages/notFound/not-fou
 import { Character } from '@app/shared/interfaces/data.interface';
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 const MY_FAVORITES = "myFavorites";
 
@@ -13,7 +14,7 @@ export class LocalStorageService{
     private charactersFavSubject = new BehaviorSubject<Character[]>(null); // arreglo de personajes leidos
     charactersFav$ = this.charactersFavSubject.asObservable(); // los define como observables
 
-    constructor(){
+    constructor( private toastrSvc : ToastrService){
         this.initialStorage();
     }
 
@@ -23,18 +24,19 @@ export class LocalStorageService{
         const found= !!currentsFav.find((fav:Character)=> fav.id === id); // con find(JS)
                   // !! convierten la variable a booleano
         // Busca la primera coincidencia con el id de los registros que llegan
-        found ? this.removeFromFavorite(id) : this.addFromFavorite(character);
+        found ? this.removeFromFavorite(id) : this.addToFavorite(character);
         // ternario si existe lo eleimna. si no lo agrega
     }
     
-    private addFromFavorite(character:Character):void{
+    private addToFavorite(character:Character):void{
         try {
             const currentFav = this.getFavoriteCharacters();
             localStorage.setItem(MY_FAVORITES,JSON.stringify([...currentFav,character]));
             this.charactersFavSubject.next([...currentFav,character]);
+            this.toastrSvc.success(`${character.name} añadido a favoritos correctamente`, 'Rick & Morty App');
         } catch (error) {
-            console.log('Error al guardar en el local storagee', error);
-            alert('Error');
+            console.log('Error al guardar en el local storage', error);
+            this.toastrSvc.error(`Error al guardar en el local storage ${error}`, 'Rick & Morty App');
         }
     } 
     
@@ -44,9 +46,10 @@ export class LocalStorageService{
             const characters = currentFav.filter(item => item.id !== id);
             localStorage.setItem(MY_FAVORITES, JSON.stringify([...characters]));
             this.charactersFavSubject.next([...characters]);
+            this.toastrSvc.warning(`Personaje eliminado de favoritos`, 'Rick & Morty App');
         } catch (error) {
             console.log('Error al borrar en el local storagee', error);
-            alert('Error');
+            this.toastrSvc.error(`Error al borrar en el local storage ${error}`, 'Rick & Morty App');
         }
     }
 
@@ -56,7 +59,8 @@ export class LocalStorageService{
             this.charactersFavSubject.next(charactersFav);
             return charactersFav;
         } catch (error) {
-            console.log('Error al traer los favoritos de local',error)
+            console.log('Error al traer los favoritos de local',error);
+            this.toastrSvc.error(`Error al traer los favoritos de local ${error}`, 'Rick & Morty App');
         }
     }
 
@@ -64,7 +68,8 @@ export class LocalStorageService{
         try {
             localStorage.clear();
         } catch (error) {
-            console.log('Error al limpiar el localStorage',error)
+            console.log('Error al limpiar el localStorage',error);
+            this.toastrSvc.error(`Error al limpiar en el local storage ${error}`, 'Rick & Morty App');
         }
     }
 

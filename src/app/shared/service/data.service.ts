@@ -30,6 +30,7 @@ const QUERY = gql`
   providedIn: 'root'
 })
 export class DataService {
+  
   private episodesSubject = new BehaviorSubject<Episode[]>(null);
   episodes$ = this.episodesSubject.asObservable();
 
@@ -50,6 +51,7 @@ export class DataService {
         // Estructuramos otra vez en este caso episodios y personajes
         const {characters, episodes} = data;
         // nos sirven paara construir los observables
+        this.episodesSubject.next(episodes.results);
         this.charactersSubject.next(characters.results);
         this.parseCharactersData(characters.results);
       })

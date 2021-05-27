@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '@shared/service/data.service';
 
 @Component({
@@ -14,8 +14,15 @@ import { DataService } from '@shared/service/data.service';
   `,
   styleUrls: ['./episodes.component.scss']
 })
-export class EpisodesComponent {
+export class EpisodesComponent implements OnInit{
+  
   episodes$ = this.dataSvc.episodes$;
+  //episodes$ = this.dataSvc.episodes$;
+
   constructor(private dataSvc:DataService) {  
+  }
+
+  ngOnInit():void {
+
   }
 }
