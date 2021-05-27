@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalStorageService } from '@shared/service/localStorage.service';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  charactersFav$ = this.localStorageSvc.charactersFav$;
+
+  constructor(private localStorageSvc:LocalStorageService) {  }
 
   ngOnInit(): void {
   }

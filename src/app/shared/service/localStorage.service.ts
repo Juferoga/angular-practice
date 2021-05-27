@@ -17,7 +17,7 @@ export class LocalStorageService{
         this.initialStorage();
     }
 
-    private addOrRemoveFromFavorite(character: Character):void{
+    addOrRemoveFromFavorite(character: Character):void{
         const {id} = character; // estructurando el id que recibimos
         const currentsFav = this.getFavoriteCharacters(); // recuperamos los favoritos
         const found= !!currentsFav.find((fav:Character)=> fav.id === id); // con find(JS)
