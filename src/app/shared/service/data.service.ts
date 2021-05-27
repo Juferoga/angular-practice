@@ -1,8 +1,8 @@
-import { Character, Episode, DataResponse } from './../interfaces/data.interface';
+import { Character, Episode, DataResponse, APIResponse } from './../interfaces/data.interface';
 import { Injectable } from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
-import {take, tap} from 'rxjs/operators';
+import {pluck, take, tap, withLatestFrom} from 'rxjs/operators';
 import { LocalStorageService } from './localStorage.service';
 
 const QUERY = gql`
@@ -40,6 +40,36 @@ export class DataService {
   constructor(private apollo:Apollo, private localStorageSvc:LocalStorageService) {
     this.getDataApi();
    }
+
+  getCharactersByPage(pageNum:number): void{
+    const QUERY_BY_PAGE = gql`{
+      characters (page: ${pageNum}){
+        results {
+          id
+          name
+          status
+          species
+          gender
+          image
+        }
+      }
+    }
+    `;
+
+    this.apollo.watchQuery<any>({
+      query:QUERY_BY_PAGE
+    }).valueChanges.pipe(
+      take(1), // tomar una emision del observable
+      pluck('data','characters'), // hace como un struct de los datos tomando solo 
+                                  // los que vengan de characters
+      withLatestFrom(this.characters$), // recibe un observable y devuelve un arreglo
+      tap(([apiResponse, characters]) =>{ 
+        // console.log({apiResponse, characters}); // respuesta del API
+        this.parseCharactersData([...characters, ...apiResponse.results]); // usando parse unimos 
+        // los antiguos personajes con los nuevos
+      })
+    ).subscribe();
+  }
 
   private getDataApi():void{
     this.apollo.watchQuery<DataResponse>({
