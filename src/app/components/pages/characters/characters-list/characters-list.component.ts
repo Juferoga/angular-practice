@@ -3,6 +3,7 @@
 // Ya que no existe :)
 import { Component} from '@angular/core';
 import { DataService } from '@app/shared/service/data.service';
+import { LocalStorageService } from '@app/shared/service/localStorage.service';
 
 @Component({
   selector: 'app-characters-list',
@@ -18,5 +19,5 @@ import { DataService } from '@app/shared/service/data.service';
 export class CharactersListComponent {
   // Definición del observable, a partir del servicio creado
   characters$ = this.dataSvc.characters$;
-  constructor(private dataSvc: DataService) { }
+  constructor(private dataSvc: DataService, private localStorageSvc: LocalStorageService) { }
 }
